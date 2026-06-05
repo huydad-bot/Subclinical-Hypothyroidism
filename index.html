@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2023 대한갑상선학회 무증상갑상선기능저하증 진료권고안</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5; --border: #d0d7de;
+    --accent: #0969da; --accent2: #0550ae; --green: #1a7f37; --yellow: #9a6700;
+    --red: #cf222e; --orange: #bc4c00; --text: #1f2328; --text2: #57606a;
+    --str: #1a7f37; --weak: #0550ae; --gps: #57606a;
+    --loe-h: #9a6700; --loe-m: #1a7f37; --loe-l: #57606a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+
+  /* HEADER */
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display: flex; flex-direction: column; align-items: center; gap: 4px; position: sticky; top: 0; z-index: 100; }
+  .header-inner { width: 100%; max-width: 900px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-badge { background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: 0.5px; }
+  .source-link { color: var(--accent2); font-size: 11px; text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+  .meta { color: var(--text2); font-size: 11px; }
+
+  /* TABS */
+  .tab-bar { display: flex; justify-content: center; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0; overflow-x: auto; scrollbar-width: none; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-bar-inner { width: 100%; max-width: 900px; display: flex; align-items: center; justify-content: center; gap: 2px; }
+  .tab { padding: 8px 13px; font-size: 12px; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 6px; flex-shrink: 0; position: relative; }
+
+  /* MAIN */
+  .main { padding: 12px 16px; max-width: 900px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (max-width: 680px) { .grid2 { grid-template-columns: 1fr; } }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: 14px; transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  /* STAT */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; min-width: 100px; text-align: center; }
+  .stat-val { font-size: 18px; font-weight: 700; color: var(--accent2); }
+  .stat-lbl { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+  /* GRADE BADGES */
+  .grade { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; position: relative; cursor: help; }
+  .grade-str-h { background: #dafbe1; color: #116329; border: 1px solid var(--str); }
+  .grade-str-m { background: #dafbe1; color: #116329; border: 1px solid var(--str); }
+  .grade-str-l { background: #e8f5e9; color: #116329; border: 1px solid #57906a; }
+  .grade-weak-h { background: #ddf4ff; color: var(--accent2); border: 1px solid var(--accent2); }
+  .grade-weak-m { background: #ddf4ff; color: var(--accent2); border: 1px solid var(--accent2); }
+  .grade-weak-l { background: #f0f8ff; color: var(--accent2); border: 1px solid #88b4e8; }
+  .grade-gps { background: #f6f8fa; color: var(--gps); border: 1px solid var(--border); }
+
+  /* TOOLTIP */
+  .grade::after { content: attr(data-tip); display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1f2328; color: #e6edf3; font-size: 11px; font-weight: 400; line-height: 1.5; padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 500; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+  .grade:hover::after { display: block; }
+
+  /* REC LIST */
+  .rec-list { list-style: none; }
+  .rec-item { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-badges { display: flex; gap: 4px; flex-shrink: 0; margin-top: 1px; flex-wrap: nowrap; }
+  .rec-text { font-size: 12px; color: var(--text); line-height: 1.55; }
+  .rec-text strong { color: var(--accent2); }
+
+  /* ALERT */
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: 12px; margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; }
+  .alert-danger { background: #ffebe9; border-left: 3px solid var(--red); color: #82071e; }
+  .alert-info { background: #ddf4ff; border-left: 3px solid var(--accent2); color: #0550ae; }
+  .alert-warn { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green); color: #116329; }
+
+  /* TABLE */
+  .sch-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .sch-table th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; font-weight: 600; text-align: left; white-space: nowrap; }
+  .sch-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .sch-table tr:last-child td { border-bottom: none; }
+  .sch-table tr:hover td { background: rgba(0,0,0,0.02); }
+  .sch-table .section-row td { background: var(--surface2); color: var(--accent2); font-weight: 600; font-size: 11px; }
+
+  /* ACCORDION */
+  .osa-acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 5px; overflow: hidden; }
+  .osa-hdr { background: var(--surface2); padding: 7px 12px; font-size: 12px; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .osa-hdr:hover { background: var(--border); }
+  .osa-hdr span.arr { font-size: 11px; color: var(--text2); }
+  .osa-body { display: none; padding: 10px 12px; font-size: 12px; }
+
+  /* SP */
+  .sp-section { margin-bottom: 8px; }
+  .sp-title { background: var(--surface2); border-left: 3px solid var(--accent); padding: 7px 10px; font-size: 12px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; border-radius: 0 4px 4px 0; margin-bottom: 1px; user-select: none; }
+  .sp-body { padding: 0; max-height: 0; overflow: hidden; transition: max-height .3s ease, padding .3s; }
+  .sp-body.open { max-height: 3000px; padding: 8px 0; }
+
+  /* PILL */
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+  .pill-new { background: #dafbe1; color: var(--green); }
+  .pill-key { background: #ddf4ff; color: var(--accent2); }
+
+  /* TSH BADGE */
+  .tsh-mild { background: #fff8c5; color: #7d4e00; font-weight: 700; border-radius: 4px; padding: 2px 8px; font-size: 11px; }
+  .tsh-severe { background: #ffebe9; color: #82071e; font-weight: 700; border-radius: 4px; padding: 2px 8px; font-size: 11px; }
+  .age-adult { background: #ddf4ff; color: #0550ae; font-weight: 700; border-radius: 4px; padding: 2px 8px; font-size: 11px; }
+  .age-elderly { background: #f6f8fa; color: #57606a; font-weight: 700; border-radius: 4px; padding: 2px 8px; font-size: 11px; }
+
+  /* ABBR */
+  .abbr-grid-main { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .abbr-term { font-weight: 700; color: var(--accent2); font-size: 12px; font-family: 'Courier New', monospace; white-space: nowrap; }
+  .abbr-def { font-size: 11px; color: var(--text2); line-height: 1.45; }
+
+  /* RISK TABLE */
+  .risk-green { background: #dafbe1; color: #116329; font-weight: 600; text-align: center; }
+  .risk-yellow { background: #fff8c5; color: #7d4e00; font-weight: 600; text-align: center; }
+  .risk-red { background: #ffebe9; color: #82071e; font-weight: 600; text-align: center; }
+  .risk-gray { background: #f6f8fa; color: #57606a; font-weight: 600; text-align: center; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+  small { color: var(--text2); font-size: 10px; }
+  .danger-text { color: var(--red); }
+  .success-text { color: var(--green); }
+  .info-text { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:10px;justify-content:center">
+      <span class="logo-badge">KTA 2023</span>
+      <h1 style="font-size:18px;font-weight:700;color:var(--text)">무증상갑상선기능저하증 진료권고안</h1>
+    </div>
+    <div style="text-align:center;margin-top:2px;line-height:1.4">
+      <a href="https://doi.org/10.11106/ijt.2023.16.1.32" class="source-link" target="_blank">Int J Thyroidol 2023;16(1):32–50 ↗</a>
+      <span class="meta"> · 대한갑상선학회 · 2023년 5월</span><br>
+      <span style="font-size:10px;color:var(--text2);font-style:italic">This tool is not officially endorsed by KTA</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('diagnosis')">🔬 진단·분류</div>
+    <div class="tab" onclick="showTab('treatment')">💊 치료 선별</div>
+    <div class="tab" onclick="showTab('management')">📋 추적관리</div>
+    <div class="tab" onclick="showTab('education')">📚 환자 교육</div>
+    <div class="tab" onclick="showTab('updates')">🆕 핵심 권고 요약</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:12px;pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:12px;width:130px;min-width:130px;max-width:130px;outline:none;box-sizing:border-box;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:10px;color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:460px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══ OVERVIEW ═══ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--red)">6.8</div><div class="stat-lbl">한국인 TSH 참고치 상한 (mIU/L)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--yellow)">10.0</div><div class="stat-lbl">경증/중증 구분 기준 (mIU/L)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--accent2)">70</div><div class="stat-lbl">성인/고령 구분 연령 (세)</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">90%</div><div class="stat-lbl">경증(TSH 6.8–10) 비율</div></div>
+  </div>
+
+  <!-- 정의 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📌</span> 무증상갑상선기능저하증(SCH) 정의 및 특징</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:8px"><span>ℹ️</span><div><strong>무증상갑상선기능저하증(SCH)</strong> = 혈중 TSH 상승 + 혈중 free T4 정상. 대부분 무증상으로 건강검진에서 우연히 발견.</div></div>
+      <div class="grid2">
+        <div>
+          <div style="font-weight:700;font-size:12px;color:var(--accent2);margin-bottom:6px">🇰🇷 한국인 TSH 참고치</div>
+          <table class="sch-table">
+            <tr><th>구분</th><th>TSH 범위 (mIU/L)</th></tr>
+            <tr><td>정상</td><td><strong>0.6 – 6.8</strong> mIU/L</td></tr>
+            <tr><td><span class="tsh-mild">경증 SCH</span></td><td>6.8 – 10.0 mIU/L</td></tr>
+            <tr><td><span class="tsh-severe">중증 SCH</span></td><td>&gt;10.0 mIU/L</td></tr>
+          </table>
+          <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>참고치 근거: 2013–2015년 제6기 국민건강영양조사 6,564명 분석 (전기화학발광면역분석법). TSH 측정 kit에 따라 수치 차이 가능.</div></div>
+        </div>
+        <div>
+          <div style="font-weight:700;font-size:12px;color:var(--accent2);margin-bottom:6px">👥 분류 체계</div>
+          <table class="sch-table">
+            <tr><th>축</th><th>기준</th><th>분류</th></tr>
+            <tr><td>TSH 수준</td><td>6.8–10 mIU/L</td><td><span class="tsh-mild">경증</span></td></tr>
+            <tr><td>TSH 수준</td><td>&gt;10 mIU/L</td><td><span class="tsh-severe">중증</span></td></tr>
+            <tr><td>연령</td><td>&lt;70세</td><td><span class="age-adult">성인</span></td></tr>
+            <tr><td>연령</td><td>≥70세</td><td><span class="age-elderly">고령</span></td></tr>
+          </table>
+          <p style="font-size:11px;color:var(--text2);margin-top:6px">→ 2×2 매트릭스로 치료방침 결정</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 권고 등급 체계 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 권고 등급 체계 (ACP 기준, Table 1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="sch-table">
+        <tr><th>권고 강도</th><th>근거 수준</th><th>표기</th><th>의미</th></tr>
+        <tr><td rowspan="3"><strong>강력(Strong)</strong></td><td>High</td><td><span class="grade grade-str-h" data-tip="Strong, High — 이득이 위험보다 명확히 크고 근거 수준 높음 (RCT 1개 이상)">Strong, High</span></td><td>RCT 1개 이상 잘 설계된 연구</td></tr>
+        <tr><td>Moderate</td><td><span class="grade grade-str-m" data-tip="Strong, Moderate — 이득이 위험보다 명확히 크고 근거 수준 중등도">Strong, Moderate</span></td><td>RCT with 제한점 / 코호트 / 케이스컨트롤</td></tr>
+        <tr><td>Low</td><td><span class="grade grade-str-l" data-tip="Strong, Low — 이득이 위험보다 명확하나 근거는 관찰연구 수준">Strong, Low</span></td><td>관찰 연구</td></tr>
+        <tr><td rowspan="3"><strong>제한적(Weak)</strong></td><td>High</td><td><span class="grade grade-weak-h" data-tip="Weak, High — 이득과 위험이 균형. 높은 근거 수준.">Weak, High</span></td><td>이득과 위험이 미세하게 균형</td></tr>
+        <tr><td>Moderate</td><td><span class="grade grade-weak-m" data-tip="Weak, Moderate — 이득과 위험이 균형. 중등도 근거.">Weak, Moderate</span></td><td>이득과 위험이 균형</td></tr>
+        <tr><td>Low</td><td><span class="grade grade-weak-l" data-tip="Weak, Low — 이득과 위험이 균형. 낮은 근거 수준.">Weak, Low</span></td><td>관찰연구 기반</td></tr>
+        <tr><td colspan="2"><strong>전문가 권고사항</strong></td><td><span class="grade grade-gps" data-tip="GPS — Good Practice Statement: 전문가 의견 기반 임상 실무 권고. 공식 근거 검토 없음.">GPS</span></td><td>Good Practice Statement — 공식 근거 검토 없이 전문가 합의</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 원인 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔍</span> SCH 원인 (Table 4)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="osa-acc">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">갑상선 질환 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• <strong>만성 자가면역갑상선염</strong> (하시모토 갑상선염) — 가장 흔한 원인</li>
+            <li>• 침윤성 갑상선염 (아밀로이드증, 사르코이드증, 리이델 갑상선염 등)</li>
+            <li>• 일과성 갑상선염 (아급성, 무통성, 산후 갑상선염) 회복기</li>
+            <li>• 현성 갑상선기능저하증의 부적절한 LT4 치료 (용량 부족, 순응도 저하, 흡수 감소)</li>
+            <li>• 갑상선엽절제술 후</li>
+          </ul>
+        </div>
+      </div>
+      <div class="osa-acc" style="margin-top:4px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">약제 유발 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <table class="sch-table">
+            <tr><th>약제</th><th>비고</th></tr>
+            <tr><td>요오드 조영제, 아미오다론</td><td>요오드 과부하</td></tr>
+            <tr><td>리튬</td><td>TSH 분비 촉진</td></tr>
+            <tr><td>타이로신키나제억제제 (sunitinib, sorafenib, lenvatinib 등)</td><td>갑상선 기능 억제</td></tr>
+            <tr><td>인터페론 알파</td><td>자가면역 유발</td></tr>
+            <tr><td>면역관문억제제 (ipilimumab, pembrolizumab 등)</td><td>면역 관련 내분비 독성</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="osa-acc" style="margin-top:4px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">기타 원인 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• <strong>요오드 과잉 섭취</strong> — 한국은 고요오드 섭취 국가; 48.5% 환자에서 요오드 제한만으로 갑상선기능 정상화</li>
+            <li>• 생리학적: 계절 변화(겨울), 일중 변동(저녁·밤에 TSH↑)</li>
+            <li>• 비갑상선질환 회복기, 부신피질저하, 만성신부전</li>
+            <li>• 측정 오류: 이종친화항체, 류마티스인자, 비오틴, macro-TSH</li>
+            <li>• 갑상선호르몬저항증후군, 두경부 악성종양, 심한 비만 (BMI &gt;40)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ DIAGNOSIS ═══ -->
+<div id="tab-diagnosis" class="panel">
+
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> TSH 참고치 및 진단 기준 (섹션 I·II)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list" style="margin-bottom:8px">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">SCH 진단 TSH 참고치는 각 지역·연령별 기준집단 데이터에 근거한 값 사용</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">한국인 TSH 참고치: <strong>0.6–6.8 mIU/L</strong> (2013–2015 제6기 국민건강영양조사 근거). 단, 측정 kit에 따른 차이 고려.</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">SCH 분류: <span class="tsh-mild">경증 (TSH 6.8–10 mIU/L)</span> / <span class="tsh-severe">중증 (TSH &gt;10 mIU/L)</span>. 연령 기준: <span class="age-adult">성인 &lt;70세</span> / <span class="age-elderly">고령 ≥70세</span></div></li>
+      </ul>
+      <div class="alert alert-warn"><span>⚠️</span><div>TSH는 일중 변동(이른 오후 최저, 저녁·밤에 높음), 약제, 수면, 비갑상선질환 등에 영향받음. 반드시 <strong>반복 측정</strong>으로 지속적 상승 확인 필요.</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔄</span> 현성 갑상선기능저하증 진행 위험 (섹션 III)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list" style="margin-bottom:8px">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">처음 발견된 SCH: 치료 여부 결정을 위해 TSH 추적검사 시행. 임상적 고려: <strong>처음 발견 2–3개월 후</strong> 추적검사 고려.</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">경과 예측을 위해 <strong>TPO 항체</strong> 측정. TPO 항체 양성 시 현성 갑상선기능저하증 이환율 2배 이상↑.</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-m" data-tip="Weak, Moderate">Weak, M</span></div><div class="rec-text">현성 진행 위험인자 고려한 추적검사 및 치료 필요할 수 있음 (아래 위험인자 표 참조)</div></li>
+      </ul>
+      <div class="osa-acc">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📋 현성 갑상선기능저하증 진행 위험인자 (Table 5) <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <div class="grid2">
+            <div>
+              <div style="font-weight:700;font-size:12px;color:var(--red);margin-bottom:4px">⚠️ 주요 위험인자</div>
+              <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+                <li>• <strong>높은 혈중 TSH 농도</strong> (특히 ≥10 mIU/L)</li>
+                <li>• <strong>TSH 지속 상승</strong> / 추적 시 2배 이상 상승</li>
+                <li>• <strong>TPO 항체 양성</strong>, 갑상선글로불린 항체 양성</li>
+                <li>• 낮은 free T4 (정상 하한)</li>
+                <li>• <strong>여성</strong></li>
+                <li>• 갑상선종대</li>
+              </ul>
+            </div>
+            <div>
+              <div style="font-weight:700;font-size:12px;color:var(--yellow);margin-bottom:4px">📌 기타 위험인자</div>
+              <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+                <li>• 고령</li>
+                <li>• 혈당 이상 (식후 2h ≥200 mg/dL)</li>
+                <li>• 이상지질혈증 (총콜레스테롤 ≥240 mg/dL)</li>
+                <li>• 비만 (BMI &gt;30 kg/m²)</li>
+                <li>• 고혈압, 심방세동, 신장질환</li>
+                <li>• 아미오다론 투약</li>
+              </ul>
+            </div>
+          </div>
+          <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div><strong>LT4 치료 고려 특수 상황</strong>: TSH 20 mIU/L 이상, 갑상선엽절제술 병력, 만성갑상선염 병력으로 현성 진행 예상 시</div></div>
+        </div>
+      </div>
+      <div class="osa-acc" style="margin-top:4px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📊 자연 경과 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <table class="sch-table">
+            <tr><th>경과</th><th>비율</th><th>비고</th></tr>
+            <tr><td>현성 갑상선기능저하증 진행</td><td>연간 5–8%</td><td>5년 이내 정상 기능 대비 10배 위험</td></tr>
+            <tr><td>5년 추적 이환율</td><td>2.0–3.4%</td><td>—</td></tr>
+            <tr><td>10년 이상 추적 이환율</td><td>33–55%</td><td>TPO 항체 양성 시 2배↑</td></tr>
+            <tr><td>자연 정상화</td><td>6–35%</td><td>경증, TPO 음성, 초음파 정상에서 높음</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🇰🇷</span> 한국인 TSH 분포 특이점 (Table 2·3)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info" style="margin-bottom:8px"><span>ℹ️</span><div>한국인 TSH 상한치는 다른 나라(4–5 mIU/L) 대비 높으며(6–7 mIU/L), 연령에 따른 변화가 선형이 아닌 <strong>U자형</strong>이다 — 40대에서 최저, 10대·70대 이상에서 최고.</div></div>
+      <table class="sch-table">
+        <tr><th>자료 출처</th><th>대상자 수</th><th>TSH 참고치 (2.5–97.5%)</th><th>연도</th></tr>
+        <tr><td>제6기 국민건강영양조사</td><td>6,564명</td><td><strong>0.62–6.86 mIU/L</strong></td><td>2017</td></tr>
+        <tr><td>건강검진(아산병원)</td><td>5,778명</td><td>0.73–7.06 mIU/L</td><td>2014</td></tr>
+        <tr><td>안성·KLoSHA 코호트</td><td>3,399 / 940명</td><td>—</td><td>2010</td></tr>
+        <tr><td>건강검진(영남대병원)</td><td>1,591명</td><td>0.35–6.42 (여) / 0.38–4.35 (남)</td><td>2008</td></tr>
+      </table>
+      <div class="alert alert-info" style="margin-top:8px"><span>📌</span><div><strong>요오드 과잉 섭취</strong>: 한국인 평균 요오드 섭취량 299.3 μg/L — WHO 권장(100–199 μg/L) 대비 현저히 높음. 요오드 제한만으로 약 48.5% 환자에서 갑상선 기능 정상화 확인.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TREATMENT ═══ -->
+<div id="tab-treatment" class="panel">
+
+  <!-- 치료 결정 매트릭스 -->
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🎯</span> LT4 치료 결정 매트릭스 — 핵심 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="sch-table">
+        <tr style="background:var(--surface2)">
+          <th>연령 × TSH</th>
+          <th><span class="tsh-mild">경증 (6.8–10)</span></th>
+          <th><span class="tsh-severe">중증 (&gt;10)</span></th>
+        </tr>
+        <tr>
+          <td><span class="age-adult">성인 (&lt;70세)</span></td>
+          <td><span class="grade grade-weak-m">Weak, M</span> <span class="danger-text">일반적 불권고</span><br><small>심혈관질환 동반도 불권고</small></td>
+          <td>
+            <span class="grade grade-str-m">Strong, M</span> <span class="success-text">관상동맥질환·심부전 동반 → <strong>시행</strong></span><br>
+            <span class="grade grade-weak-m">Weak, M</span> 이상지질혈증 동반 → <strong>고려 가능</strong><br>
+            <small>대사증후군·비만·우울·증상 목적 → 불권고</small>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="age-elderly">고령 (≥70세)</span></td>
+          <td><span class="grade grade-str-h">Strong, H</span> <span class="danger-text"><strong>시행하지 않음</strong></span></td>
+          <td><span class="grade grade-weak-m">Weak, M</span> <span class="danger-text">일반적 불권고</span><br><small>심혈관질환 동반도 불권고</small></td>
+        </tr>
+      </table>
+      <div class="alert alert-danger" style="margin-top:8px"><span>🚫</span><div>대사증후군·비만·우울증·인지기능·삶의 질·증상 호전 목적으로는 <strong>연령·중증도 무관하게 LT4 치료 불권고</strong></div></div>
+    </div>
+  </div>
+
+  <!-- 심혈관·대사 -->
+  <div class="sp-section">
+    <div class="sp-title" onclick="toggleSP(this)">❤️ 심혈관·대사질환 동반 (섹션 IV) <span>▾</span></div>
+    <div class="sp-body">
+      <ul class="rec-list" style="margin-bottom:8px">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-m" data-tip="Weak, Moderate">Weak, M</span></div><div class="rec-text"><span class="age-adult">성인</span> <span class="tsh-mild">경증</span>: LT4 치료는 심혈관질환 동반되어도 <span class="danger-text">일반적 불권고</span></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text"><span class="age-adult">성인</span> <span class="tsh-severe">중증</span>: 기저 <strong>관상동맥질환 또는 심부전</strong> 동반 → LT4 <strong>시행</strong></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text"><span class="age-elderly">고령</span> <span class="tsh-mild">경증</span>: LT4 <strong>시행하지 않음</strong></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-m" data-tip="Weak, Moderate">Weak, M</span></div><div class="rec-text"><span class="age-elderly">고령</span> <span class="tsh-severe">중증</span>: 심혈관질환 동반도 <span class="danger-text">일반적 불권고</span></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">대사증후군·비만 치료 목적 LT4 <span class="danger-text">시행하지 않음</span></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-m" data-tip="Weak, Moderate">Weak, M</span></div><div class="rec-text"><span class="age-adult">성인</span> <span class="tsh-severe">중증</span> + <strong>이상지질혈증</strong>: 지질 개선 목적으로 LT4 <strong>고려 가능</strong></div></li>
+      </ul>
+      <div class="osa-acc">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📊 SCH와 심혈관질환 메타분석 근거 요약 (Table 6) <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <table class="sch-table">
+            <tr><th>결과</th><th>TSH 범위</th><th>위험도</th><th>주요 연구</th></tr>
+            <tr><td>심부전</td><td>&gt;10 mIU/L</td><td class="risk-yellow">HR 1.59 (1.15–2.19)</td><td>Thyroid Studies Collaboration</td></tr>
+            <tr><td>관상동맥질환</td><td>&gt;10 mIU/L</td><td class="risk-yellow">HR 1.89 (1.22–2.82)</td><td>동상</td></tr>
+            <tr><td>심혈관 사망</td><td>&gt;10 mIU/L</td><td class="risk-yellow">HR 1.54 (1.07–2.23)</td><td>동상</td></tr>
+            <tr><td>치명적 CVD</td><td>any (age &lt;65)</td><td class="risk-yellow">HR 1.54 (1.21–1.96)</td><td>메타분석 27코호트</td></tr>
+            <tr><td>치명적 CVD</td><td>any (age ≥65)</td><td class="risk-green">HR 1.07 (0.97–1.18)</td><td>동상 — 유의하지 않음</td></tr>
+            <tr><td>대사증후군</td><td>any</td><td class="risk-yellow">OR 1.28 (1.19–1.39)</td><td>메타분석 18코호트</td></tr>
+            <tr><td>LDL 콜레스테롤</td><td>any</td><td class="risk-yellow">+7.01 mg/dL</td><td>메타분석 15코호트</td></tr>
+          </table>
+          <div class="alert alert-info" style="margin-top:6px"><span>📌</span><div>심혈관 위험 증가는 주로 <strong>TSH &gt;10 mIU/L (중증)</strong>에서 유의. 경증 SCH는 심혈관질환 위험 유의한 상승 없음. <strong>65세 이상</strong>에서는 심혈관 위험 증가 유의하지 않음.</div></div>
+        </div>
+      </div>
+      <div class="osa-acc" style="margin-top:4px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">🔬 주요 RCT 근거 (TRUST·IEMO) <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <table class="sch-table">
+            <tr><th>연구</th><th>대상</th><th>중재</th><th>결과</th></tr>
+            <tr><td><strong>TRUST</strong></td><td>65세 이상 SCH 737명 (평균 74.4세, TSH 평균 6.4)</td><td>LT4 50 μg/일 vs 위약</td><td class="risk-green">심혈관질환·증상·인지기능 — 유의한 차이 없음</td></tr>
+            <tr><td><strong>IEMO</strong></td><td>80세 이상 SCH 251명</td><td>LT4 vs 위약</td><td class="risk-green">심혈관질환·사망·증상 — 유의한 차이 없음</td></tr>
+          </table>
+          <div class="alert alert-warn" style="margin-top:6px"><span>⚠️</span><div>고령 환자 대상 대규모 RCT 2건 모두 LT4 치료의 이득 미입증 → <strong>고령에서 LT4 불권고</strong>의 핵심 근거</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 심리·인지 -->
+  <div class="sp-section">
+    <div class="sp-title" onclick="toggleSP(this)">🧠 심리·인지기능 (섹션 V) <span>▾</span></div>
+    <div class="sp-body">
+      <ul class="rec-list" style="margin-bottom:8px">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-l" data-tip="Weak, Low">Weak, L</span></div><div class="rec-text"><span class="age-adult">성인</span>: 우울증 개선 목적 LT4 <span class="danger-text">일반적 불권고</span></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-m" data-tip="Weak, Moderate">Weak, M</span></div><div class="rec-text"><span class="age-elderly">고령</span>: 인지기능 개선 목적 LT4 <span class="danger-text">일반적 불권고</span></div></li>
+      </ul>
+      <div class="osa-acc">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📊 근거 요약 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• SCH ↔ 우울증: 메타분석에서 OR 1.13 (1.01–1.28) 미약하지만 유의한 연관. 60세 미만에서 우울증 진단 위험 3.8배 증가.</li>
+            <li>• LT4 치료의 우울증 개선 효과: 4개 RCT 모두 <strong>유의한 효과 없음</strong></li>
+            <li>• SCH ↔ 인지기능: 전향적 코호트 메타분석에서 치매·MMSE 감소와 연관 없음. 다만 75세 미만에서 치매 위험 1.81배 증가 보고(일부 연구).</li>
+            <li>• TRUST 연구: LT4 치료군 — 인지기능 개선 유의한 차이 없음</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 임상 증상 -->
+  <div class="sp-section">
+    <div class="sp-title" onclick="toggleSP(this)">🩺 임상 증상·삶의 질 (섹션 VI) <span>▾</span></div>
+    <div class="sp-body">
+      <ul class="rec-list" style="margin-bottom:8px">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-l" data-tip="Weak, Low">Weak, L</span></div><div class="rec-text"><span class="age-adult">성인</span>: 갑상선기능저하 관련 증상 호전 목적 LT4 <span class="danger-text">일반적 불권고</span></div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text"><span class="age-elderly">고령</span>: 삶의 질 향상 또는 증상 호전 목적 LT4 <span class="danger-text"><strong>시행하지 않음</strong></span></div></li>
+      </ul>
+      <div class="osa-acc">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📊 근거 및 예외 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• 갑상선기능저하 증상(피로·냉감·건조피부·변비 등)은 비특이적이고 정상인의 약 2/3에서도 1개 이상의 증상 존재</li>
+            <li>• RCT 메타분석: LT4 치료 — 삶의 질·증상 호전과 유의한 연관 없음</li>
+            <li>• 예외: TSH ≥12 mIU/L의 성인 중증 SCH에서 세부 분석 시 증상 호전 일부 보고 (전체 분석에서는 유의하지 않음)</li>
+            <li>• <strong>결론</strong>: 증상 호전만을 목적으로 한 LT4 치료는 연령 무관하게 권고되지 않음</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MANAGEMENT ═══ -->
+<div id="tab-management" class="panel">
+
+  <!-- 약제 선택 -->
+  <div class="card" style="margin-bottom:10px">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> LT4 치료 약제 및 용량 (섹션 VII)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list" style="margin-bottom:8px">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-h" data-tip="Strong, High">Strong, H</span></div><div class="rec-text"><strong>LT4 경구투여</strong>가 SCH의 가장 적절한 치료방법</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">고령 또는 심혈관질환 위험 동반: 초기 <strong>12.5–25 μg/일</strong>로 시작 → 1–2개월 간격 갑상선기능검사 추적 → TSH 정상화 목표 용량 조정</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-str-m" data-tip="Strong, Moderate">Strong, M</span></div><div class="rec-text">LT4 치료 중 갑상선기능 항진 전환 시 <strong>용량 감량 및 중단 시도</strong> 필요</div></li>
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-weak-m" data-tip="Weak, Moderate">Weak, M</span></div><div class="rec-text">LT4 미치료 SCH: 주기적 추적관찰 시행. 적절한 검사 간격은 경증·중증에 따라 결정.</div></li>
+      </ul>
+      <div class="osa-acc">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📋 LT4 용량 및 복용 지침 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <table class="sch-table" style="margin-bottom:8px">
+            <tr><th>환자 유형</th><th>시작 용량</th><th>목표</th><th>검사 간격</th></tr>
+            <tr><td>일반 성인</td><td>12.5–50 μg/일</td><td>TSH 정상 범위</td><td>1–3개월 후 TSH → 정상화 후 3–6개월 → 안정 후 1년</td></tr>
+            <tr><td>고령 / 심혈관질환 동반</td><td><strong>12.5–25 μg/일</strong></td><td>TSH 정상화</td><td>1–2개월 간격으로 점진 증량</td></tr>
+          </table>
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• 체중 증가→ LT4 필요량 증가 (최대 1일 1.5 μg/kg)</li>
+            <li>• 65세 이상 평균 50 μg/일, 젊은 연령 68–71 μg/일 필요</li>
+            <li>• 실제 TSH 정상 유지 비율 40–60% — 주기적 모니터링 필수</li>
+          </ul>
+        </div>
+      </div>
+      <div class="osa-acc" style="margin-top:4px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">⏰ LT4 복용법 및 흡수 주의사항 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• <strong>공복 복용 필수</strong>: 아침 식사 60분 전 또는 취침 전 (마지막 식사 4h 후)</li>
+            <li>• <strong>흡수 저해 음식</strong>: 우유(칼슘), 커피, 두유</li>
+            <li>• <strong>흡수 저해 약제</strong>: 철분제, 제산제(H₂차단제·PPI), cholestyramine, raloxifene</li>
+            <li>• <strong>흡수 저해 질환</strong>: 위축성위염, 악성빈혈, 비만수술</li>
+            <li>• 흡수 저해 환자: 용량↑ 또는 비타민C·과일주스와 함께 복용</li>
+          </ul>
+          <div class="alert alert-warn" style="margin-top:6px"><span>⚠️</span><div>T3/T4 복합제: 메타분석에서 LT4 단독 대비 이득 없음 → <strong>현재 권고되지 않음</strong></div></div>
+        </div>
+      </div>
+      <div class="osa-acc" style="margin-top:4px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">🔄 LT4 중단 가능 예측 인자 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• LT4 치료 시작 후 35.6%에서 약물 중단 가능 (메타분석)</li>
+            <li>• <strong>중단 예측 인자</strong>: TSH &lt;10 mIU/L, 초음파 균질한 정상 실질, TPO 항체 음성, 고령, 갑상선종 없음</li>
+            <li>• 경증 SCH + TPO 음성 + 초음파 정상 실질 → <strong>중단 시도 가능</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 추적관리 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📅</span> LT4 미치료 SCH 추적관리 간격</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="sch-table">
+        <tr><th>상황</th><th>권장 검사 간격</th><th>비고</th></tr>
+        <tr><td>초진 후 첫 추적</td><td><strong>2–3개월 후</strong> TSH + TPO 항체</td><td>지속 여부 확인</td></tr>
+        <tr><td>SCH 지속, 미치료</td><td><strong>6개월마다</strong></td><td>특별한 변화 없으면 연 1회도 가능</td></tr>
+        <tr><td>갑상선기능 정상화</td><td>추가 추적 불필요</td><td>TPO 음성 + 종대 없는 경우</td></tr>
+        <tr><td>LT4 시작 후</td><td>1–3개월 → 정상화 후 3–6개월 → 1년</td><td>안정 시 연 1회</td></tr>
+        <tr><td>고위험군 (TPO 양성 등)</td><td>더 짧은 간격</td><td>현성 진행 위험 높은 경우</td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px"><span>⚠️</span><div>LT4 장기 복용 중 TSH 검사 없이 지속 투여 → 갑상선기능항진 전환 위험. <strong>특히 고령·골다공증·부정맥 동반 환자</strong>에서 정기 TSH 모니터링 필수.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EDUCATION ═══ -->
+<div id="tab-education" class="panel">
+
+  <div class="alert alert-info" style="margin-bottom:10px"><span>📌</span><div>아래 교육 권고사항은 <strong>GPS (Good Practice Statement)</strong> — 공식 근거 검토 없이 전문가 합의에 의한 임상 실무 지침.</div></div>
+
+  <div class="sp-section">
+    <div class="sp-title" onclick="toggleSP(this)">📊 정기 갑상선기능검사 교육 (GPS 1) <span>▾</span></div>
+    <div class="sp-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-gps" data-tip="GPS — 전문가 권고사항 (Good Practice Statement)">GPS</span></div><div class="rec-text">지속되는 SCH에서 정기적인 갑상선기능검사의 필요성 교육:
+          <ul style="margin-top:4px;padding-left:12px;line-height:1.9">
+            <li>치료 안 하는 경우 → 현성 갑상선기능저하증 진행 여부 확인 목적</li>
+            <li>치료 시작한 경우 → LT4 용량 조정·지속 복용 필요성 평가 목적</li>
+          </ul>
+        </div></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-title" onclick="toggleSP(this)">🌊 요오드 섭취 주의 교육 (GPS 2) <span>▾</span></div>
+    <div class="sp-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-gps" data-tip="GPS — 전문가 권고사항">GPS</span></div><div class="rec-text">만성 자가면역갑상선염 의심 환자:
+          <ul style="margin-top:4px;padding-left:12px;line-height:1.9">
+            <li>저요오드 식이 권장</li>
+            <li>고요오드 함유 건강보조식품(다시마 진액 등) 피하기</li>
+            <li>고요오드 함유 약제 복용 주의</li>
+          </ul>
+        </div></li>
+      </ul>
+      <div class="osa-acc" style="margin-top:6px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📋 한국인 요오드 섭취 현황 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• 한국인 평균 소변 요오드 농도: <strong>299.3 μg/L</strong> (사분위수 158.8–699.8 μg/L)</li>
+            <li>• WHO 권장량(100–199 μg/L) 초과자: <strong>66.3%</strong></li>
+            <li>• SCH 환자 64명 전향 연구: 요오드 제한 후 <strong>48.5%</strong>에서 갑상선기능 정상화</li>
+            <li>• 고요오드 식품: 해조류(김·미역·다시마), 해산물</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sp-section">
+    <div class="sp-title" onclick="toggleSP(this)">🤰 임신 관련 교육 (GPS 3) <span>▾</span></div>
+    <div class="sp-body">
+      <ul class="rec-list">
+        <li class="rec-item"><div class="rec-badges"><span class="grade grade-gps" data-tip="GPS — 전문가 권고사항">GPS</span></div><div class="rec-text">모든 가임 연령 여성에서 임신 관련 주의사항 교육. 특히 LT4 치료 없이 경과 관찰 중인 여성에서 계획 임신의 필요성 교육.</div></li>
+      </ul>
+      <div class="osa-acc" style="margin-top:6px">
+        <div class="osa-hdr" onclick="toggleOsaAcc(this)">📋 임신 시 SCH 관리 상세 <span class="arr">▸</span></div>
+        <div class="osa-body">
+          <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+            <li>• 임신 시 목표 TSH: <strong>4.0 mIU/L 이하</strong> (대한갑상선학회 2023 개정 임신 갑상선질환 권고안 기준)</li>
+            <li>• SCH 상태의 임신은 태아·산모 모두에 바람직하지 않음</li>
+            <li>• <strong>임신 계획 중</strong>: 적절한 LT4 보충으로 임신 중 목표 TSH 도달 후 임신 시도</li>
+            <li>• <strong>LT4 미치료 SCH</strong>: 임신 계획 또는 임신 확인 즉시 갑상선기능검사 + 적절한 치료</li>
+            <li>• 소아·청소년·임신부·임신을 시도하는 여성은 본 진료지침 적용 대상 <strong>제외</strong> (별도 지침 적용)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ UPDATES (권고 요약) ═══ -->
+<div id="tab-updates" class="panel">
+
+  <div class="alert alert-success" style="margin-bottom:10px"><span>✅</span><div>2023년 국내 최초 무증상갑상선기능저하증 진료지침. 한국인 TSH 참고치 적용 및 연령·중증도별 치료방침 제시. 아래 항목을 클릭하면 상세 내용 확인 가능.</div></div>
+
+  <!-- 1 -->
+  <div class="osa-acc">
+    <div class="osa-hdr" onclick="toggleOsaAcc(this)">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">1</span>
+        <strong>한국인 TSH 참고치 상한 6.8 mIU/L 채택</strong>
+      </span><span class="arr">▸</span>
+    </div>
+    <div class="osa-body">
+      <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+        <li>• 기존 외국 기준(4.0 mIU/L)이 아닌 한국인 실측 데이터 기반 <strong>6.8 mIU/L</strong> 적용</li>
+        <li>• 근거: 제6기 국민건강영양조사(2013–2015) 6,546명 97.5 백분위수</li>
+        <li>• TSH 4.0–6.5 mIU/L 환자는 수년 후에도 임상적 유의성 없음 확인</li>
+        <li>• 단, 측정 kit 종류에 따른 수치 차이 고려 필요</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 2 -->
+  <div class="osa-acc">
+    <div class="osa-hdr" onclick="toggleOsaAcc(this)">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">2</span>
+        <strong>경증/중증, 성인/고령으로 4개 군 세분화</strong>
+      </span><span class="arr">▸</span>
+    </div>
+    <div class="osa-body">
+      <table class="sch-table">
+        <tr><th></th><th>경증 (6.8–10)</th><th>중증 (&gt;10)</th></tr>
+        <tr><td>성인 (&lt;70세)</td><td class="risk-yellow">일반적 불권고</td><td class="risk-green">관상동맥질환·심부전 동반 → 권고</td></tr>
+        <tr><td>고령 (≥70세)</td><td class="risk-red">시행하지 않음 (Strong, H)</td><td class="risk-yellow">일반적 불권고</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="osa-acc">
+    <div class="osa-hdr" onclick="toggleOsaAcc(this)">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">3</span>
+        <strong>증상 기반 치료 결정 방식 폐기 → 증명된 건강 효과 중심</strong>
+      </span><span class="arr">▸</span>
+    </div>
+    <div class="osa-body">
+      <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+        <li>• 기존: 2013 ETA 지침 — 증상 동반 경증 성인에서 LT4 고려</li>
+        <li>• 2023 KTA: 증상 호전 목적 LT4 권고 삭제 → 증명된 임상 이득에만 집중</li>
+        <li>• 근거: TRUST·IEMO 연구에서 증상·삶의 질·인지기능 개선 없음 확인</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="osa-acc">
+    <div class="osa-hdr" onclick="toggleOsaAcc(this)">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">4</span>
+        <strong>고령(≥70세) 경증 SCH: Strong, High 불권고 (가장 강한 수준)</strong>
+      </span><span class="arr">▸</span>
+    </div>
+    <div class="osa-body">
+      <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+        <li>• <span class="grade grade-str-h">Strong, High</span> — 이번 지침에서 가장 강력한 권고 등급</li>
+        <li>• 근거: TRUST(65세 이상), IEMO(80세 이상) — LT4 이득 없음 + 골다공증·부정맥 위험</li>
+        <li>• 고령에서 TSH 상승은 정상 노화 현상일 수 있으며, LT4로 인한 잠재적 과치료 위험</li>
+        <li>• <strong>핵심 메시지</strong>: 고령 경증 SCH는 치료 안 하는 것이 더 안전</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 5 -->
+  <div class="osa-acc">
+    <div class="osa-hdr" onclick="toggleOsaAcc(this)">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">5</span>
+        <strong>성인 중증 + 이상지질혈증: LT4 고려 가능 (Weak, M)</strong>
+      </span><span class="arr">▸</span>
+    </div>
+    <div class="osa-body">
+      <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+        <li>• TSH &gt;10 mIU/L + 이상지질혈증 동반 성인에서 LT4로 지질 개선 가능</li>
+        <li>• 메타분석: LT4 치료로 총콜레스테롤 11.2 mg/dL↓, LDL 콜레스테롤 8.5 mg/dL↓</li>
+        <li>• 특히 TSH ≥12 mIU/L에서 효과 뚜렷 (소규모 RCT)</li>
+        <li>• 경증 SCH + 이상지질혈증: 지질 개선 목적 LT4 <strong>불권고</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 6 -->
+  <div class="osa-acc">
+    <div class="osa-hdr" onclick="toggleOsaAcc(this)">
+      <span style="display:flex;align-items:center;gap:8px">
+        <span style="background:var(--accent);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0">6</span>
+        <strong>요오드 섭취 제한 — 국내 특수 환경 반영</strong>
+      </span><span class="arr">▸</span>
+    </div>
+    <div class="osa-body">
+      <ul style="list-style:none;padding:0;font-size:12px;line-height:1.9">
+        <li>• 한국인 고요오드 섭취 환경 반영한 GPS 권고 신설</li>
+        <li>• SCH 환자 중 자가면역갑상선염 의심 시 요오드 제한 권장</li>
+        <li>• 건강보조식품·고요오드 약제 피하도록 교육</li>
+        <li>• 국내 코호트: 요오드 제한으로 48.5%에서 갑상선기능 정상화</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 약어 패널 -->
+  <div id="tab-abbreviations" style="display:none">
+    <div id="abbr-main-grid" class="abbr-grid-main"></div>
+  </div>
+
+</div>
+</div><!-- /main -->
+
+<script>
+// TAB
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// CARD
+function toggleCard(header) {
+  header.classList.toggle('open');
+  header.nextElementSibling.classList.toggle('collapsed');
+}
+
+// OSA ACC
+function toggleOsaAcc(hdr) {
+  const body = hdr.nextElementSibling;
+  const spans = hdr.querySelectorAll('span');
+  const icon = spans[spans.length - 1];
+  const open = getComputedStyle(body).display !== 'none';
+  body.style.display = open ? 'none' : 'block';
+  icon.textContent = open ? '▸' : '▾';
+}
+
+// SP
+function toggleSP(title) {
+  const body = title.nextElementSibling;
+  body.classList.toggle('open');
+  const arrow = title.querySelector('span:last-child');
+  arrow.textContent = body.classList.contains('open') ? '▴' : '▾';
+}
+
+// ABBR
+const abbrs = [
+  ['SCH','Subclinical Hypothyroidism (무증상갑상선기능저하증) — TSH 상승 + 정상 free T4. 대부분 무증상으로 건강검진에서 우연 발견.'],
+  ['TSH','Thyroid-Stimulating Hormone (갑상선자극호르몬) — 뇌하수체 전엽 분비; 갑상선 기능 조절; SCH 진단·추적의 핵심 지표. 한국인 정상: 0.6–6.8 mIU/L.'],
+  ['fT4','Free T4 (유리 타이록신) — 갑상선 주요 호르몬의 활성형. SCH에서 정상. 현성 갑상선기능저하증에서 저하.'],
+  ['T3','Triiodothyronine (트리요오도타이로닌) — 생물학적 활성 갑상선호르몬. T4의 말초 전환으로 생성. SCH에서 주로 정상.'],
+  ['LT4','Levothyroxine (레보타이록신) — 합성 T4; SCH 및 갑상선기능저하증 표준 치료약. 공복 복용 필수.'],
+  ['TPO','Thyroperoxidase (갑상선과산화효소) — 갑상선 호르몬 합성 핵심 효소. 항TPO 항체 양성 시 자가면역갑상선염 및 현성 진행 위험↑.'],
+  ['TPO 항체','Thyroperoxidase Antibody — 자가면역갑상선염의 가장 민감한 혈청학적 지표. 양성 시 현성 진행률 2배↑. 초진 시 측정 권고.'],
+  ['Tg 항체','Thyroglobulin Antibody (갑상선글로불린 항체) — TPO 항체 음성 SCH에서 양성 가능. 자가면역갑상선염 진단 보조.'],
+  ['KTA','Korean Thyroid Association (대한갑상선학회) — 본 진료지침 발행 학술단체.'],
+  ['ACP','American College of Physicians (미국내과학회) — 본 지침의 권고 등급 체계(Strong/Weak × High/Moderate/Low) 기반.'],
+  ['ETA','European Thyroid Association (유럽갑상선학회) — 2013년 SCH 단독 진료지침 발행. 본 KTA 지침의 기반이 된 권고안.'],
+  ['GPS','Good Practice Statement (전문가 권고사항) — 공식 체계적 문헌 고찰 없이 전문가 합의로 제시하는 임상 실무 지침. 강제성은 Strong/Weak보다 낮음.'],
+  ['RCT','Randomized Controlled Trial (무작위 대조 시험) — 치료 효과 평가의 최고 수준 근거. Strong, High 등급의 기반.'],
+  ['TRUST','Thyroid Hormone Replacement for Untreated Older Adults with SCH — 65세 이상 SCH 737명 LT4 vs 위약 RCT; 심혈관·인지·증상 — 유의한 차이 없음; NEJM 2017.'],
+  ['IEMO','Institute for Evidence based Medicine in Old age — 80세 이상 SCH 251명 LT4 vs 위약 RCT; 심혈관·증상 개선 없음; JAMA 2019.'],
+  ['NHANES','National Health and Nutrition Examination Survey — 미국 국민건강영양조사. 한국: 국민건강영양조사(KNHANES).'],
+  ['KLoSHA','Korean Longitudinal Study on Health and Aging — 한국 노인 종단건강조사. 65세 이상 SCH 유병률 17.3% 보고.'],
+  ['KoGES','Korean Genome and Epidemiology Study — 한국인유전체역학조사사업. 40–70세 SCH 유병률 11.7% 보고.'],
+  ['BMI','Body Mass Index (체질량지수) — SCH 원인: BMI &gt;40 kg/m² 심한 비만에서 TSH 상승 가능.'],
+  ['PPI','Proton Pump Inhibitor (양성자펌프억제제) — LT4 흡수 저해 약제. 위장관 pH 상승으로 LT4 용해도↓.'],
+  ['MMSE','Mini-Mental State Examination (간이정신상태검사) — 인지기능 평가 도구. SCH와 MMSE 감소 간 연관 없음 (메타분석).'],
+  ['Macro-TSH','Macro-TSH — TSH와 항체의 복합체. 실제 TSH 기능 없이 혈중 TSH 측정치만 높게 나타남. TSH 측정 오류 원인 중 하나.'],
+  ['TKI','Tyrosine Kinase Inhibitor (타이로신키나제억제제) — 항암제 (sunitinib, sorafenib, lenvatinib 등). 갑상선 기능 억제로 SCH 유발 가능.'],
+  ['ICI','Immune Checkpoint Inhibitor (면역관문억제제) — 항암 면역치료제 (ipilimumab, pembrolizumab 등). 자가면역 갑상선염 유발 가능.'],
+  ['Amiodarone','아미오다론 — 부정맥 치료 약제. 고요오드 함량으로 갑상선기능저하·항진 모두 유발. SCH 원인 중 중요 약제.'],
+  ['Euthyroid','Euthyroid (정상 갑상선기능) — TSH 및 fT4가 모두 정상 범위인 상태.'],
+  ['Overt Hypothyroidism','현성 갑상선기능저하증 — TSH 상승 + fT4 저하. SCH에서 진행 가능; 연간 5–8%.'],
+];
+
+function buildAbbr() {
+  const items = abbrs.slice().sort((a,b)=>a[0].localeCompare(b[0]));
+  const html = items.map(a =>
+    `<div class="abbr-item" data-term="${a[0].toLowerCase()}" data-def="${a[1].toLowerCase()}">
+      <span class="abbr-term">${a[0]}</span>
+      <span class="abbr-def">${a[1]}</span>
+    </div>`).join('');
+  document.getElementById('abbr-main-grid').innerHTML = html;
+  document.getElementById('abbr-grid-drop').innerHTML = html;
+  document.getElementById('abbr-count').textContent = abbrs.length;
+}
+
+function positionDropdown() {
+  const inp = document.getElementById('abbr-input');
+  const drop = document.getElementById('abbr-dropdown');
+  const rect = inp.getBoundingClientRect();
+  const dropW = 460;
+  let left = rect.right - dropW;
+  if (left < 8) left = 8;
+  drop.style.top = (rect.bottom + 4) + 'px';
+  drop.style.left = left + 'px';
+}
+
+function filterAbbr(val) {
+  const v = val.toLowerCase().trim();
+  const drop = document.getElementById('abbr-dropdown');
+  const items = document.querySelectorAll('#abbr-grid-drop .abbr-item');
+  if (!v) { drop.style.display = 'none'; document.getElementById('abbr-count').textContent = abbrs.length; return; }
+  positionDropdown();
+  drop.style.display = 'block';
+  let visible = 0;
+  items.forEach(el => {
+    const show = el.dataset.term.startsWith(v);
+    el.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('abbr-count').textContent = visible + '/' + abbrs.length;
+}
+
+document.addEventListener('click', e => {
+  const inp = document.getElementById('abbr-input');
+  const drop = document.getElementById('abbr-dropdown');
+  if (inp && !inp.contains(e.target) && drop && !drop.contains(e.target)) drop.style.display = 'none';
+});
+
+buildAbbr();
+</script>
+</body>
+</html>
